@@ -1,4 +1,4 @@
-# rConq
+# pConq
 A port of the ancient Conquer v4 to python.
 
 # GIT:  git@github.com:quixadhal/pConq.git
