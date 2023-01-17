@@ -10,12 +10,14 @@ import pytz
 def today():
     return datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
 
+
 def now_stamp():
     right_now = datetime.datetime.now(datetime.timezone.utc)
     part = right_now.strftime('%Y-%m-%d %H:%M:%S')
     msecs = right_now.microsecond
     result = "%s.%03d %s" % (part, msecs, datetime.timezone.utc)
     return result
+
 
 def now():
     return datetime.datetime.now(datetime.timezone.utc).timestamp()
@@ -34,8 +36,8 @@ class LogReformatter(logging.Formatter):
     :rtype: object
     """
 
-    #ut = datetime.datetime.fromtimestamp(time.time())
-    #print(ut.astimezone().tzinfo)
+    # ut = datetime.datetime.fromtimestamp(time.time())
+    # print(ut.astimezone().tzinfo)
 
     time_converter = datetime.datetime.fromtimestamp
 
@@ -104,19 +106,19 @@ class Loggers(object):
     @classmethod
     def addLogger(cls, name):
         if name not in cls._loggers.keys():
-            this_log            = logging.getLogger(name)
-            this_stream         = StreamLogger()
+            this_log = logging.getLogger(name)
+            this_stream = StreamLogger()
             this_log.setLevel(logging.DEBUG)
             this_log.addHandler(this_stream)
-            this_log.getName            = cls.getName.__get__(this_log)         # evil
-            this_log.startFileoutput    = cls.startFileoutput.__get__(this_log) # evil
-            this_log.stopFileoutput     = cls.stopFileoutput.__get__(this_log)  # evil
+            this_log.getName = cls.getName.__get__(this_log)  # evil
+            this_log.startFileoutput = cls.startFileoutput.__get__(this_log)  # evil
+            this_log.stopFileoutput = cls.stopFileoutput.__get__(this_log)  # evil
             cls._loggers[name] = {
-                    "name"      : name,
-                    "logger"    : this_log,
-                    "stream"    : this_stream,
-                    "file"      : None
-                    }
+                "name": name,
+                "logger": this_log,
+                "stream": this_stream,
+                "file": None
+            }
         return cls._loggers[name]["logger"]
 
     @classmethod
@@ -151,7 +153,7 @@ class Loggers(object):
         :rtype: None
         """
         name = self.getName()
-        print("Starting file log for %s" % (name))
+        print("Starting file log for %s" % name)
         this_file = FileLogger(name + '-' + today())
         self.addHandler(this_file)
         Loggers._loggers[name]["file"] = this_file
@@ -167,9 +169,8 @@ class Loggers(object):
         :rtype: None
         """
         name = self.getName()
-        print("Stopping file log for %s" % (name))
+        print("Stopping file log for %s" % name)
         this_file = Loggers._loggers[name]["file"]
-        #this_file.close()
+        # this_file.close()
         self.removeHandler(this_file)
         Loggers._loggers[name]["file"] = None
-
